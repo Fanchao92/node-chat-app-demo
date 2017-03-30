@@ -15,6 +15,17 @@ app.use(express.static(publicPath));
 io.on('connection', (socket) => {
 	console.log(`A new user is connected. Socket #: ${socket.id}`);
 
+	socket.emit('newMessage', {
+		from: 'administrator', 
+		text: 'Welcome to the chat room!',
+		createdAt: new Date().getTime()
+	});
+	socket.broadcast.emit('newMessage', {
+		from: 'administrator', 
+		text: 'Someone joins chat room!',
+		createdAt: new Date().getTime()
+	});
+
 	socket.on('createMessage', (message) => {
 		if(message.from && message.text) {
 			console.log(`newMessage from ${message.from}: ${message.text}`);

@@ -17,13 +17,13 @@ io.on('connection', (socket) => {
 
 	socket.on('createMessage', (message) => {
 		if(message.from && message.text) {
-			console.log(`Message Created by socket ${socket.id}:\n${message.from}: ${message.text}`);
+			console.log(`newMessage from ${message.from}: ${message.text}`);
+			io.emit('newMessage', {
+				from: message.from,
+				text: message.text,
+				createdAt: new Date().getTime()
+			});
 		}
-	});
-	socket.emit('newMessage', {
-		from: 'Erick',
-		text: "How are y'all?",
-		createdAt: "Mar/27/2017"
 	});
 
 	socket.on('disconnect', () => {

@@ -8,10 +8,6 @@ socket.on('connect', function() {
 			console.log(message);
 		}
 	});
-	socket.emit('createMessage', {
-		from: 'Jane',
-		text: 'I am good! How are you?'
-	});
 });
 socket.on('disconnect', function() {
 	console.log(`disconnected from server. socket #: ${socket.id}`);

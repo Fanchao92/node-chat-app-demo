@@ -14,20 +14,23 @@ var io = socketIO(server);
 app.use(express.static(publicPath));
 
 io.on('connection', (socket) => {
-	console.log(`A new user is connected. Socket #: ${socket.id}`);
+	console.log(`New User connected at ${new Date().getTime()}. Socket #: ${socket.id}`);
 
 	socket.emit('newMessage', generateMessage('administrator', 'Welcome to the chat room!'));
 	socket.broadcast.emit('newMessage', generateMessage('administrator', 'Someone joins the chat room!'));
 
-	socket.on('createMessage', (message) => {
+	socket.on('createMessage', (message, callback) => {
 		if(message.from && message.text) {
 			console.log(`newMessage from ${message.from}: ${message.text}`);
 			io.emit('newMessage', generateMessage(message.from, message.text));
+			callback('From Server: Message Acknowledged');
+		} else {
+			callback('From Server: Message Denied');
 		}
 	});
 
 	socket.on('disconnect', () => {
-		console.log(`A user is disconnected from server. Socket #: ${socket.id}`);
+		console.log(`User Disconnect at ${new Date().getTime()}. Socket #: ${socket.id}`);
 	});
 });
 

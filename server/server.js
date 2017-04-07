@@ -2,7 +2,7 @@ const path = require('path');
 const express = require('express');
 const http = require('http');
 const socketIO = require('socket.io');
-const {generateMessage} = require('./utils/message.js');
+const {generateMessage, generateLocationMessage} = require('./utils/message.js');
 
 const publicPath = path.join(__dirname, '..', 'public');
 const portNum = process.env.PORT || 3000;
@@ -23,9 +23,19 @@ io.on('connection', (socket) => {
 		if(message.from && message.text) {
 			console.log(`newMessage from ${message.from}: ${message.text}`);
 			io.emit('newMessage', generateMessage(message.from, message.text));
-			callback('From Server: Message Acknowledged');
+			callback('From Server: Text Message Acknowledged');
 		} else {
-			callback('From Server: Message Denied');
+			callback('From Server: Text Message Denied');
+		}
+	});
+
+	socket.on('createLocationMessage', (message, callback) => {
+		if(message.from && message.latitude && message.longitude) {
+			console.log(`newMessage from ${message.from}: latitude: ${message.latitude}, longtitude: ${message.longitude}`);
+			io.emit('newLocationMessage', generateLocationMessage(message.from, message.latitude, message.longitude));
+			callback('From Server: Geolocation Message Acknowledged');
+		} else {
+			callback('From Server: Geolocation Message Denied');
 		}
 	});
 

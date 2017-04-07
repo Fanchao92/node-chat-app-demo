@@ -14,14 +14,14 @@ var io = socketIO(server);
 app.use(express.static(publicPath));
 
 io.on('connection', (socket) => {
-	console.log(`New User connected at ${new Date().getTime()}. Socket #: ${socket.id}`);
+	console.log(`New User connected at Unix Time: ${new Date().getTime()}. Socket #: ${socket.id}`);
 
 	socket.emit('newMessage', generateMessage('administrator', 'Welcome to the chat room!'));
 	socket.broadcast.emit('newMessage', generateMessage('administrator', 'Someone joins the chat room!'));
 
 	socket.on('createMessage', (message, callback) => {
 		if(message.from && message.text) {
-			console.log(`newMessage from ${message.from}: ${message.text}`);
+			console.log(`newMessage from ${message.from}(Socket #: socket.id): ${message.text}`);
 			io.emit('newMessage', generateMessage(message.from, message.text));
 			callback('From Server: Text Message Acknowledged');
 		} else {

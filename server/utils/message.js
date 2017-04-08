@@ -6,7 +6,7 @@ var generateMessage = function(from, text) {
 	return {
 		from,
 		text,
-		createdAt: date.format('YYYY-MM-DD ddd hh:mm:ss A')
+		createdAt: date.valueOf()
 	};
 } 
 
@@ -14,7 +14,7 @@ var generateLocationMessage = function(from, lat, long) {
 	return {
 		from,
 		url: `https://www.google.com/maps?q=${lat},${long}`,
-		createdAt: date.format('YYYY-MM-DD ddd hh:mm:ss A')
+		createdAt: date.valueOf()
 	};
 }
 

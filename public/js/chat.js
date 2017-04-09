@@ -2,7 +2,7 @@ var socket = io();
 
 function scrollToBottom() {
 	var messages = $('#messages');
-	var newMessage = messages.children('li:last-child');
+	var newMessage = messages.children('li').last();
 
 	var clientHeight = messages.prop('clientHeight');
 	var scrollTop = messages.prop('scrollTop');

@@ -1,7 +1,5 @@
 var socket = io();
 
-var name = 'Unknown User';
-
 function scrollToBottom() {
 	var messages = $('#messages');
 	var newMessage = messages.children('li').last();
@@ -19,7 +17,6 @@ function scrollToBottom() {
 socket.on('connect', function() {
 	var params = $.deparam(window.location.search);
 
-	name = params.name;
 	socket.emit('join', params, function(err) {
 		if(err) {
 			alert(err);
@@ -87,7 +84,6 @@ if(!navigator.geolocation) {
 		geolocationButton.attr("disabled", "true");
 		navigator.geolocation.getCurrentPosition(function(pos) {
 			socket.emit('createLocationMessage', {
-				from: name,
 				latitude: pos.coords.latitude,
 				longitude: pos.coords.longitude
 			}, (ackMsg) => {
@@ -108,7 +104,6 @@ $('#message-form').on('submit', function(event){
 	var textMsg = textInput.val();
 
 	socket.emit('createMessage', {
-		from: name,
 		text: textMsg
 	}, function(ack) {
 		console.log(ack);

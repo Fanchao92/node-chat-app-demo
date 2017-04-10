@@ -33,11 +33,11 @@ io.on('connection', (socket) => {
 	});
 
 	socket.on('createMessage', (message, callback) => {
-		if(message.from && message.text) {
+		if(message.text) {
 			var user = users.getUser(socket.id);
 
 			console.log(`newMessage from ${user.name}(Socket #: socket.id): ${message.text}`);
-			io.to(user.room).emit('newMessage', generateMessage(message.from, message.text));
+			io.to(user.room).emit('newMessage', generateMessage(user.name, message.text));
 			callback('From Server: Text Message Acknowledged');
 		} else {
 			callback('From Server: Text Message Denied');
@@ -45,11 +45,11 @@ io.on('connection', (socket) => {
 	});
 
 	socket.on('createLocationMessage', (message, callback) => {
-		if(message.from && message.latitude && message.longitude) {
+		if(message.latitude && message.longitude) {
 			var user = users.getUser(socket.id);
 
 			console.log(`newMessage from ${user.name}(Socket #: socket.id): ${message.text}`);
-			io.to(user.room).emit('newLocationMessage', generateLocationMessage(message.from, message.latitude, message.longitude));
+			io.to(user.room).emit('newLocationMessage', generateLocationMessage(user.name, message.latitude, message.longitude));
 			callback('From Server: Geolocation Message Acknowledged');
 		} else {
 			callback('From Server: Geolocation Message Denied');

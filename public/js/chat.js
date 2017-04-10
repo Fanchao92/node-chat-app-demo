@@ -67,6 +67,16 @@ socket.on('newLocationMessage', function(message) {
 	}
 });
 
+socket.on('updateUserList', function(users) {
+	var ol = $('<ol></ol>');
+
+	users.forEach((user) => {
+		ol.append(`<li>${user}</li>`);
+	});
+
+	$('#users').html(ol);
+});
+
 var geolocationButton = $('#send-location');
 if(!navigator.geolocation) {
 	alert("Geolocation UNAVAILABLE in this browser!");

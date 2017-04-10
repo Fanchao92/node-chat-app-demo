@@ -25,6 +25,7 @@ io.on('connection', (socket) => {
 			socket.join(params.room);
 			socket.emit('newMessage', generateMessage('administrator', 'Welcome to the chat room: '+params.room));
 			socket.broadcast.to(params.room).emit('newMessage', generateMessage('administrator', `${params.name} joins our chat room.`));
+			io.to(params.room).emit('updateUserList', users.getUserList(params.room));
 			callback(null);
 		} else {
 			callback('Both Room Name And User Name should BE NON-EMPTY STRING!');
@@ -58,7 +59,11 @@ io.on('connection', (socket) => {
 	socket.on('disconnect', () => {
 		var user = users.removeUser(socket.id);
 
-		console.log(`User(${JSON.stringify(user)}) Disconnect at ${new Date().getTime()}. Socket #: ${socket.id}`);
+		if(user) {
+			io.to(user.room).emit('updateUserList', users.getUserList(user.room));
+			io.to(user.room).emit('newMessage', generateMessage('administrator', `${user.name} just left the chat room.`));
+			console.log(`User(${JSON.stringify(user)}) Disconnect at ${new Date().getTime()}. Socket #: ${socket.id}`);
+		}
 	});
 });
 

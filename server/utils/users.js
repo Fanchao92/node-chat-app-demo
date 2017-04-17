@@ -42,6 +42,15 @@ Users.prototype.getUserList = function(room) {
 
 	return userNames;
 }
+Users.prototype.isDuplicate = function(name, room) {
+	for(var idx = 0; idx < this.users.length; idx++) {
+		if(this.users[ idx ].room===room && this.users[ idx ].name===name) {
+			return true;
+		}
+	}
+
+	return false;
+}
 
 module.exports = {
 	Users

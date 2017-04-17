@@ -23,14 +23,12 @@ button {
   color: white;
   cursor: pointer;
   padding: 10px;
-  transition: background .3s ease;
+  transition: background 0.8s ease;
 }
 
 button:hover {
   border: none;
-  background: #1F4C69;
-  color: white;
-  padding: 10px;
+  background: #800000;
 }
 
 button:disabled {

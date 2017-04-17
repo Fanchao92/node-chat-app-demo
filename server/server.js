@@ -21,12 +21,16 @@ io.on('connection', (socket) => {
 
 	socket.on('join', (params, callback) => {
 		if(validation.isRealString(params.name) && validation.isRealString(params.room)) {
-			users.addUser(socket.id, params.name, params.room);
-			socket.join(params.room);
-			socket.emit('newMessage', generateMessage('administrator', 'Welcome to the chat room: '+params.room));
-			socket.broadcast.to(params.room).emit('newMessage', generateMessage('administrator', `${params.name} joins our chat room.`));
-			io.to(params.room).emit('updateUserList', users.getUserList(params.room));
-			callback(null);
+			if(users.isDuplicate(params.name, params.room)) {
+				callback('This user name already exists! Please try another one.');
+			} else {
+				users.addUser(socket.id, params.name, params.room);
+				socket.join(params.room);
+				socket.emit('newMessage', generateMessage('administrator', 'Welcome to the chat room: '+params.room));
+				socket.broadcast.to(params.room).emit('newMessage', generateMessage('administrator', `${params.name} joins our chat room.`));
+				io.to(params.room).emit('updateUserList', users.getUserList(params.room));
+				callback(null);
+			}
 		} else {
 			callback('Both Room Name And User Name should BE NON-EMPTY STRING!');
 		}

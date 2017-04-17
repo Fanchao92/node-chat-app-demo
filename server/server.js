@@ -16,6 +16,10 @@ var users = new Users();
 
 app.use(express.static(publicPath));
 
+app.get('/rooms', (req, res) => {
+	res.send(users.getRooms());
+});
+
 io.on('connection', (socket) => {
 	console.log(`New User connected at Unix Time: ${new Date().getTime()}. Socket #: ${socket.id}`);
 

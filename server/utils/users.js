@@ -51,6 +51,17 @@ Users.prototype.isDuplicate = function(name, room) {
 
 	return false;
 }
+Users.prototype.getRooms = function() {
+	var rooms = {};
+
+	this.users.forEach((user) => {
+		if(!rooms[ user.room ]) {
+			rooms[ user.room ] = "dummy data here";
+		}
+	});
+
+	return Object.keys(rooms);
+}
 
 module.exports = {
 	Users
